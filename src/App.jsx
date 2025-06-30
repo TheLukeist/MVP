@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Toaster } from '@/components/ui/toaster.jsx';
 import LandingPage from '@/components/LandingPage.jsx';
@@ -12,6 +12,28 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useLocalStorage('userProfile', mockUser);
 
+  // Inicializar datos de Carlos si es el usuario por defecto
+  useEffect(() => {
+    if (user.email === 'carlos.ruiz@3m.cl') {
+      // Configurar sesiones completadas para Carlos
+      const carlosCompletedSessions = [1, 2, 3, 5, 6]; // 5 sesiones completadas
+      localStorage.setItem('completedSessions', JSON.stringify(carlosCompletedSessions));
+      localStorage.setItem('userCoins', JSON.stringify(5)); // 5 monedas
+      localStorage.setItem('bookedSessions', JSON.stringify([4])); // Una sesión reservada
+      
+      // Actualizar progreso del usuario
+      const updatedUser = {
+        ...user,
+        weeklyProgress: {
+          ...user.weeklyProgress,
+          sessionsCompleted: 5,
+          exerciseMinutes: 225
+        }
+      };
+      setUser(updatedUser);
+    }
+  }, [user.email, setUser]);
+
   const handleNavigate = (page) => {
     setCurrentPage(page);
   };
@@ -19,6 +41,11 @@ function App() {
   const handleLogin = (loginData) => {
     if (loginData === 'default') {
       setUser(defaultUser);
+      // Configurar datos específicos de Carlos
+      const carlosCompletedSessions = [1, 2, 3, 5, 6]; // 5 sesiones completadas
+      localStorage.setItem('completedSessions', JSON.stringify(carlosCompletedSessions));
+      localStorage.setItem('userCoins', JSON.stringify(5)); // 5 monedas
+      localStorage.setItem('bookedSessions', JSON.stringify([4])); // Una sesión reservada
     } else if (loginData) {
       setUser(prevUser => ({ ...prevUser, ...loginData }));
     }
@@ -30,6 +57,10 @@ function App() {
     setIsLoggedIn(false);
     setCurrentPage('landing');
     setUser(mockUser);
+    // Limpiar datos de sesiones al cerrar sesión
+    localStorage.removeItem('completedSessions');
+    localStorage.removeItem('userCoins');
+    localStorage.removeItem('bookedSessions');
   };
 
   const renderPage = () => {

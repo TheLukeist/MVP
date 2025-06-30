@@ -171,7 +171,7 @@ export default function AuthPage({ onNavigate, onLogin }) {
           showMockProgress();
         }
       } else if (progressCode.toUpperCase() === 'CARLOS' || progressCode.toUpperCase() === 'CR2024') {
-        // Fallback para Carlos si no hay datos guardados
+        // Datos específicos de Carlos con progreso real
         const carlosProgress = {
           userName: "Carlos Ruiz",
           age: 72,
@@ -179,21 +179,21 @@ export default function AuthPage({ onNavigate, onLogin }) {
           weeklyProgress: {
             sessionsCompleted: 5,
             totalSessions: 6,
-            exerciseMinutes: 240,
-            weeklyGoal: 300
+            exerciseMinutes: 225,
+            weeklyGoal: 270
           },
           progressHistory: [
-            { week: "Esta semana", sessions: 5, minutes: 240 },
-            { week: "Semana pasada", sessions: 4, minutes: 160 },
-            { week: "Hace 2 semanas", sessions: 3, minutes: 120 },
-            { week: "Hace 3 semanas", sessions: 4, minutes: 155 },
+            { week: "Esta semana", sessions: 5, minutes: 225 },
+            { week: "Semana pasada", sessions: 4, minutes: 180 },
+            { week: "Hace 2 semanas", sessions: 3, minutes: 135 },
+            { week: "Hace 3 semanas", sessions: 4, minutes: 180 },
           ],
           recentSessions: [
             { name: "Equilibrio y Coordinación", date: "Hoy", completed: true },
             { name: "Yoga Suave para Seniors", date: "Ayer", completed: true },
             { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
-            { name: "Fortalecimiento Muscular", date: "Hace 3 días", completed: true },
-            { name: "Pilates para Flexibilidad", date: "Hace 4 días", completed: true },
+            { name: "Pilates para Flexibilidad", date: "Hace 3 días", completed: true },
+            { name: "Caminata Activa", date: "Hace 4 días", completed: true },
           ]
         };
         
