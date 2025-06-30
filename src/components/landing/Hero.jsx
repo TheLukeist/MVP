@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, ArrowRight, Shield, Activity, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 
 const slides = [
@@ -24,6 +24,15 @@ const slides = [
   },
   {
     id: 3,
+    title: "Ejercicios de Movilidad y Equilibrio",
+    subtitle: "Mantén tu independencia y confianza",
+    description: "Biblioteca completa de ejercicios diseñados para mejorar tu equilibrio, fuerza y flexibilidad. Previene caídas y mantente activo de forma segura.",
+    features: ["Prevención de caídas", "Ejercicios en casa", "Progreso personalizado"],
+    gradient: "bg-gradient-to-r from-green-500 to-green-600",
+    cta: "Ver Demo",
+  },
+  {
+    id: 4,
     title: "Comunidad de Bienestar",
     subtitle: "Conecta con personas como tú",
     description: "Únete a una comunidad activa de adultos mayores. Comparte experiencias, motívense mutuamente y disfruta de actividades grupales.",
@@ -39,12 +48,24 @@ export default function Hero({ onNavigate }) {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 8000); // Aumentado de 5000ms a 8000ms (8 segundos)
     return () => clearInterval(timer);
   }, []);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  const handleCTA = (slide) => {
+    if (slide.cta === "Ver Demo") {
+      // Scroll suave hacia la sección de servicios
+      const servicesSection = document.querySelector('#services-section');
+      if (servicesSection) {
+        servicesSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      onNavigate('auth');
+    }
+  };
 
   return (
     <section className="relative h-screen overflow-hidden">
@@ -54,7 +75,7 @@ export default function Hero({ onNavigate }) {
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -300 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }} // Transición más suave
           className={`absolute inset-0 ${slides[currentSlide].gradient} flex items-center justify-center text-white`}
         >
           <div className="container mx-auto px-6 text-center">
@@ -106,7 +127,7 @@ export default function Hero({ onNavigate }) {
               transition={{ delay: 1 }}
             >
               <Button 
-                onClick={() => onNavigate('auth')}
+                onClick={() => handleCTA(slides[currentSlide])}
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 shadow-lg"
               >
