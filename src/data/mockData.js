@@ -294,13 +294,13 @@ export const defaultUser = {
     shareProgress: true
   },
   weeklyProgress: {
-    sessionsCompleted: 5,
+    sessionsCompleted: 4,
     totalSessions: 6,
     exerciseMinutes: 240,
     weeklyGoal: 300
   },
   progressHistory: [
-    { week: "Esta semana", sessions: 5, minutes: 240 },
+    { week: "Esta semana", sessions: 4, minutes: 240 },
     { week: "Semana pasada", sessions: 4, minutes: 160 },
     { week: "Hace 2 semanas", sessions: 3, minutes: 120 },
     { week: "Hace 3 semanas", sessions: 4, minutes: 155 },
