@@ -19,7 +19,6 @@ export default function ExercisesPage() {
   const [showCreateRoutine, setShowCreateRoutine] = useState(false);
   const [newRoutineName, setNewRoutineName] = useState('');
   const [selectedExercisesForRoutine, setSelectedExercisesForRoutine] = useState([]);
-  const [showExerciseModal, setShowExerciseModal] = useState(false);
   const { toast } = useToast();
 
   const getDifficultyColor = (difficulty) => {
@@ -122,18 +121,6 @@ export default function ExercisesPage() {
       title: `Iniciando rutina: ${routine.name}`,
       description: `Duración total: ${routine.totalDuration} minutos. ¡Vamos a ejercitarnos!`
     });
-  };
-
-  const handleOpenExerciseModal = (exercise) => {
-    setSelectedExercise(exercise);
-    setShowExerciseModal(true);
-    setShowVideo(false);
-  };
-
-  const handleCloseExerciseModal = () => {
-    setShowExerciseModal(false);
-    setSelectedExercise(null);
-    setShowVideo(false);
   };
 
   const filteredExercises = activeCategory === 'Todas'
@@ -252,114 +239,6 @@ export default function ExercisesPage() {
     </DialogContent>
   );
 
-  const CreateRoutineModal = () => (
-    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-      <DialogHeader>
-        <DialogTitle className="text-2xl font-bold">Crear Rutina Personalizada</DialogTitle>
-      </DialogHeader>
-      <div className="space-y-6 py-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Nombre de la rutina *
-          </label>
-          <Input
-            value={newRoutineName}
-            onChange={(e) => setNewRoutineName(e.target.value)}
-            placeholder="Ej: Mi rutina matutina"
-            className="w-full"
-            maxLength={50}
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Ingresa un nombre descriptivo para tu rutina personalizada
-          </p>
-        </div>
-
-        {selectedExercisesForRoutine.length > 0 && (
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Ejercicios seleccionados ({selectedExercisesForRoutine.length})</h3>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {selectedExercisesForRoutine.map((exercise, index) => (
-                <div key={exercise.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                  <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">
-                      {index + 1}
-                    </span>
-                    <div>
-                      <span className="font-medium">{exercise.name}</span>
-                      <span className="text-sm text-gray-600 ml-2">({exercise.duration})</span>
-                    </div>
-                  </div>
-                  <Button
-                    onClick={() => handleRemoveFromRoutine(exercise.id)}
-                    variant="ghost"
-                    size="sm"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 p-3 bg-green-50 rounded-lg">
-              <p className="text-sm text-green-700">
-                <strong>Duración total:</strong> {selectedExercisesForRoutine.reduce((total, ex) => {
-                  const minutes = parseInt(ex.duration.split(' ')[0]);
-                  return total + minutes;
-                }, 0)} minutos
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Seleccionar ejercicios</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
-            {mockExercises.map((exercise) => (
-              <div key={exercise.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-sm">{exercise.name}</h4>
-                    <p className="text-xs text-gray-600">{exercise.duration} • {exercise.difficulty}</p>
-                  </div>
-                  <Button
-                    onClick={() => handleAddToRoutine(exercise)}
-                    variant="outline"
-                    size="sm"
-                    disabled={selectedExercisesForRoutine.find(ex => ex.id === exercise.id)}
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex gap-4 pt-4">
-          <Button 
-            onClick={handleSaveRoutine} 
-            size="lg" 
-            className="flex-1"
-            disabled={!newRoutineName.trim() || selectedExercisesForRoutine.length === 0}
-          >
-            <Save className="w-5 h-5 mr-2" />
-            Guardar Rutina
-          </Button>
-          <Button 
-            onClick={() => {
-              setShowCreateRoutine(false);
-              setNewRoutineName('');
-              setSelectedExercisesForRoutine([]);
-            }} 
-            variant="outline" 
-            size="lg"
-          >
-            Cancelar
-          </Button>
-        </div>
-      </div>
-    </DialogContent>
-  );
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -385,7 +264,111 @@ export default function ExercisesPage() {
                       Crear Rutina
                     </Button>
                   </DialogTrigger>
-                  <CreateRoutineModal />
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold">Crear Rutina Personalizada</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6 py-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Nombre de la rutina *
+                        </label>
+                        <Input
+                          value={newRoutineName}
+                          onChange={(e) => setNewRoutineName(e.target.value)}
+                          placeholder="Ej: Mi rutina matutina"
+                          className="w-full"
+                          maxLength={50}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Ingresa un nombre descriptivo para tu rutina personalizada
+                        </p>
+                      </div>
+
+                      {selectedExercisesForRoutine.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold mb-3">Ejercicios seleccionados ({selectedExercisesForRoutine.length})</h3>
+                          <div className="space-y-2 max-h-40 overflow-y-auto">
+                            {selectedExercisesForRoutine.map((exercise, index) => (
+                              <div key={exercise.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                                <div className="flex items-center">
+                                  <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">
+                                    {index + 1}
+                                  </span>
+                                  <div>
+                                    <span className="font-medium">{exercise.name}</span>
+                                    <span className="text-sm text-gray-600 ml-2">({exercise.duration})</span>
+                                  </div>
+                                </div>
+                                <Button
+                                  onClick={() => handleRemoveFromRoutine(exercise.id)}
+                                  variant="ghost"
+                                  size="sm"
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="mt-3 p-3 bg-green-50 rounded-lg">
+                            <p className="text-sm text-green-700">
+                              <strong>Duración total:</strong> {selectedExercisesForRoutine.reduce((total, ex) => {
+                                const minutes = parseInt(ex.duration.split(' ')[0]);
+                                return total + minutes;
+                              }, 0)} minutos
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      <div>
+                        <h3 className="text-lg font-semibold mb-3">Seleccionar ejercicios</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
+                          {mockExercises.map((exercise) => (
+                            <div key={exercise.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
+                              <div className="flex items-center justify-between">
+                                <div className="flex-1">
+                                  <h4 className="font-medium text-sm">{exercise.name}</h4>
+                                  <p className="text-xs text-gray-600">{exercise.duration} • {exercise.difficulty}</p>
+                                </div>
+                                <Button
+                                  onClick={() => handleAddToRoutine(exercise)}
+                                  variant="outline"
+                                  size="sm"
+                                  disabled={selectedExercisesForRoutine.find(ex => ex.id === exercise.id)}
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 pt-4">
+                        <Button 
+                          onClick={handleSaveRoutine} 
+                          size="lg" 
+                          className="flex-1"
+                          disabled={!newRoutineName.trim() || selectedExercisesForRoutine.length === 0}
+                        >
+                          <Save className="w-5 h-5 mr-2" />
+                          Guardar Rutina
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            setShowCreateRoutine(false);
+                            setNewRoutineName('');
+                            setSelectedExercisesForRoutine([]);
+                          }} 
+                          variant="outline" 
+                          size="lg"
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
                 </Dialog>
               </div>
             </CardHeader>
@@ -408,39 +391,46 @@ export default function ExercisesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredExercises.map((exercise, index) => (
               <motion.div key={exercise.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-                <Card className="h-full flex flex-col hover:shadow-lg transition-shadow group">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-2 group-hover:text-blue-600 transition-colors">{exercise.name}</CardTitle>
-                        <Badge variant="secondary" className="mb-2 capitalize">{exercise.category}</Badge>
+                <Dialog onOpenChange={(open) => {
+                  if (!open) {
+                    setSelectedExercise(null);
+                    setShowVideo(false);
+                  }
+                }}>
+                  <Card className="h-full flex flex-col hover:shadow-lg transition-shadow group">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg mb-2 group-hover:text-blue-600 transition-colors">{exercise.name}</CardTitle>
+                          <Badge variant="secondary" className="mb-2 capitalize">{exercise.category}</Badge>
+                        </div>
+                        <Badge className={`${getDifficultyColor(exercise.difficulty)} text-white`}>{exercise.difficulty}</Badge>
                       </div>
-                      <Badge className={`${getDifficultyColor(exercise.difficulty)} text-white`}>{exercise.difficulty}</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow flex flex-col">
-                    <div className="mb-4">
-                      <img 
-                        src={exercise.image} 
-                        alt={exercise.imageDescription} 
-                        className="w-full h-40 object-cover rounded-lg"
-                      />
-                    </div>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{exercise.description}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                      <div className="flex items-center"><Clock className="w-4 h-4 mr-1" /><span>{exercise.duration}</span></div>
-                      <div className="flex items-center"><Star className="w-4 h-4 mr-1 text-yellow-500" /><span>{exercise.difficulty}</span></div>
-                    </div>
-                    <Button 
-                      className="w-full mt-auto" 
-                      onClick={() => handleOpenExerciseModal(exercise)}
-                    >
-                      <Play className="w-4 h-4 mr-2" />
-                      Ver Ejercicio
-                      <ChevronRight className="w-4 h-4 ml-auto" />
-                    </Button>
-                  </CardContent>
-                </Card>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex flex-col">
+                      <div className="mb-4">
+                        <img 
+                          src={exercise.image} 
+                          alt={exercise.imageDescription} 
+                          className="w-full h-40 object-cover rounded-lg"
+                        />
+                      </div>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{exercise.description}</p>
+                      <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <div className="flex items-center"><Clock className="w-4 h-4 mr-1" /><span>{exercise.duration}</span></div>
+                        <div className="flex items-center"><Star className="w-4 h-4 mr-1 text-yellow-500" /><span>{exercise.difficulty}</span></div>
+                      </div>
+                      <DialogTrigger asChild>
+                        <Button className="w-full mt-auto" onClick={() => setSelectedExercise(exercise)}>
+                          <Play className="w-4 h-4 mr-2" />
+                          Ver Ejercicio
+                          <ChevronRight className="w-4 h-4 ml-auto" />
+                        </Button>
+                      </DialogTrigger>
+                    </CardContent>
+                  </Card>
+                  {selectedExercise && selectedExercise.id === exercise.id && <ExerciseModal exercise={selectedExercise} />}
+                </Dialog>
               </motion.div>
             ))}
           </div>
@@ -464,7 +454,111 @@ export default function ExercisesPage() {
                   Nueva Rutina
                 </Button>
               </DialogTrigger>
-              <CreateRoutineModal />
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold">Crear Rutina Personalizada</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-6 py-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre de la rutina *
+                    </label>
+                    <Input
+                      value={newRoutineName}
+                      onChange={(e) => setNewRoutineName(e.target.value)}
+                      placeholder="Ej: Mi rutina matutina"
+                      className="w-full"
+                      maxLength={50}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Ingresa un nombre descriptivo para tu rutina personalizada
+                    </p>
+                  </div>
+
+                  {selectedExercisesForRoutine.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-semibold mb-3">Ejercicios seleccionados ({selectedExercisesForRoutine.length})</h3>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {selectedExercisesForRoutine.map((exercise, index) => (
+                          <div key={exercise.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                            <div className="flex items-center">
+                              <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">
+                                {index + 1}
+                              </span>
+                              <div>
+                                <span className="font-medium">{exercise.name}</span>
+                                <span className="text-sm text-gray-600 ml-2">({exercise.duration})</span>
+                              </div>
+                            </div>
+                            <Button
+                              onClick={() => handleRemoveFromRoutine(exercise.id)}
+                              variant="ghost"
+                              size="sm"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-3 p-3 bg-green-50 rounded-lg">
+                        <p className="text-sm text-green-700">
+                          <strong>Duración total:</strong> {selectedExercisesForRoutine.reduce((total, ex) => {
+                            const minutes = parseInt(ex.duration.split(' ')[0]);
+                            return total + minutes;
+                          }, 0)} minutos
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Seleccionar ejercicios</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
+                      {mockExercises.map((exercise) => (
+                        <div key={exercise.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{exercise.name}</h4>
+                              <p className="text-xs text-gray-600">{exercise.duration} • {exercise.difficulty}</p>
+                            </div>
+                            <Button
+                              onClick={() => handleAddToRoutine(exercise)}
+                              variant="outline"
+                              size="sm"
+                              disabled={selectedExercisesForRoutine.find(ex => ex.id === exercise.id)}
+                            >
+                              <Plus className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 pt-4">
+                    <Button 
+                      onClick={handleSaveRoutine} 
+                      size="lg" 
+                      className="flex-1"
+                      disabled={!newRoutineName.trim() || selectedExercisesForRoutine.length === 0}
+                    >
+                      <Save className="w-5 h-5 mr-2" />
+                      Guardar Rutina
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        setShowCreateRoutine(false);
+                        setNewRoutineName('');
+                        setSelectedExercisesForRoutine([]);
+                      }} 
+                      variant="outline" 
+                      size="lg"
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
             </Dialog>
           </div>
 
@@ -530,17 +624,116 @@ export default function ExercisesPage() {
                     Crear Mi Primera Rutina
                   </Button>
                 </DialogTrigger>
-                <CreateRoutineModal />
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold">Crear Rutina Personalizada</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-6 py-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nombre de la rutina *
+                      </label>
+                      <Input
+                        value={newRoutineName}
+                        onChange={(e) => setNewRoutineName(e.target.value)}
+                        placeholder="Ej: Mi rutina matutina"
+                        className="w-full"
+                        maxLength={50}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Ingresa un nombre descriptivo para tu rutina personalizada
+                      </p>
+                    </div>
+
+                    {selectedExercisesForRoutine.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold mb-3">Ejercicios seleccionados ({selectedExercisesForRoutine.length})</h3>
+                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                          {selectedExercisesForRoutine.map((exercise, index) => (
+                            <div key={exercise.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                              <div className="flex items-center">
+                                <span className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">
+                                  {index + 1}
+                                </span>
+                                <div>
+                                  <span className="font-medium">{exercise.name}</span>
+                                  <span className="text-sm text-gray-600 ml-2">({exercise.duration})</span>
+                                </div>
+                              </div>
+                              <Button
+                                onClick={() => handleRemoveFromRoutine(exercise.id)}
+                                variant="ghost"
+                                size="sm"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-3 p-3 bg-green-50 rounded-lg">
+                          <p className="text-sm text-green-700">
+                            <strong>Duración total:</strong> {selectedExercisesForRoutine.reduce((total, ex) => {
+                              const minutes = parseInt(ex.duration.split(' ')[0]);
+                              return total + minutes;
+                            }, 0)} minutos
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <h3 className="text-lg font-semibold mb-3">Seleccionar ejercicios</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto">
+                        {mockExercises.map((exercise) => (
+                          <div key={exercise.id} className="border rounded-lg p-3 hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm">{exercise.name}</h4>
+                                <p className="text-xs text-gray-600">{exercise.duration} • {exercise.difficulty}</p>
+                              </div>
+                              <Button
+                                onClick={() => handleAddToRoutine(exercise)}
+                                variant="outline"
+                                size="sm"
+                                disabled={selectedExercisesForRoutine.find(ex => ex.id === exercise.id)}
+                              >
+                                <Plus className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 pt-4">
+                      <Button 
+                        onClick={handleSaveRoutine} 
+                        size="lg" 
+                        className="flex-1"
+                        disabled={!newRoutineName.trim() || selectedExercisesForRoutine.length === 0}
+                      >
+                        <Save className="w-5 h-5 mr-2" />
+                        Guardar Rutina
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          setShowCreateRoutine(false);
+                          setNewRoutineName('');
+                          setSelectedExercisesForRoutine([]);
+                        }} 
+                        variant="outline" 
+                        size="lg"
+                      >
+                        Cancelar
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
               </Dialog>
             </div>
           )}
         </TabsContent>
       </Tabs>
-
-      {/* Modal de ejercicio separado */}
-      <Dialog open={showExerciseModal} onOpenChange={handleCloseExerciseModal}>
-        {selectedExercise && <ExerciseModal exercise={selectedExercise} />}
-      </Dialog>
     </div>
   );
 }
