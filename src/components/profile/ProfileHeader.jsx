@@ -1,9 +1,9 @@
 import React from 'react';
 import { Crown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent } from '@/components/ui/card.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
 
 export default function ProfileHeader({ userProfile }) {
   const { toast } = useToast();

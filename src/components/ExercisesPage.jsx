@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Clock, Star, ChevronRight, Dumbbell } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
-import { mockExercises, categories } from '@/data/mockData';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import { mockExercises, categories } from '@/data/mockData.js';
 
 export default function ExercisesPage() {
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -40,8 +40,12 @@ export default function ExercisesPage() {
         <DialogTitle className="text-2xl font-bold">{exercise.name}</DialogTitle>
       </DialogHeader>
       <div className="space-y-6 py-4">
+        <div className="exercise-video flex-col">
+          <Play className="w-12 h-12 text-gray-400" />
+          <p className="mt-2">Video demostrativo del ejercicio</p>
+        </div>
         <div className="text-center">
-          <img  alt={`Demostración del ejercicio ${exercise.name}`} className="w-full max-w-md mx-auto rounded-lg shadow-md" src="https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg" />
+          <img  alt={`Demostración del ejercicio ${exercise.name}`} className="w-full max-w-md mx-auto rounded-lg shadow-md" src="https://images.unsplash.com/photo-1522152881874-22fcbf9cc1fd" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -134,7 +138,7 @@ export default function ExercisesPage() {
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col">
                   <div className="mb-4">
-                    <img  alt={exercise.imageDescription} className="w-full h-40 object-cover rounded-lg" src="https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg" />
+                    <img  alt={exercise.imageDescription} className="w-full h-40 object-cover rounded-lg" src="https://images.unsplash.com/photo-1623874400767-0fcdeedd0f5d" />
                   </div>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{exercise.description}</p>
                   <div className="flex items-center justify-between text-sm text-gray-500 mb-4">

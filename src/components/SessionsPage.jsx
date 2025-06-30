@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Calendar, Clock, MapPin, Users, Video } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/components/ui/use-toast';
-import { mockSessions, locations, sessionTypes } from '@/data/mockData';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Button } from '@/components/ui/button.jsx';
+import { Input } from '@/components/ui/input.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import { mockSessions, locations, sessionTypes } from '@/data/mockData.js';
+import { useLocalStorage } from '@/hooks/useLocalStorage.js';
 
 export default function SessionsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,7 +104,7 @@ export default function SessionsPage() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col">
                 <div className="mb-4">
-                  <img  alt={`Imagen de la sesión ${session.title}`} className="w-full h-48 object-cover rounded-lg" src="https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg" />
+                  <img  alt={`Imagen de la sesión ${session.title}`} className="w-full h-48 object-cover rounded-lg" src="https://images.unsplash.com/photo-1669152670466-f65964bca7c2" />
                 </div>
                 <p className="text-gray-600 mb-4 flex-grow">{session.description}</p>
                 <div className="space-y-2 mb-4">

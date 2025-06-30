@@ -1,10 +1,10 @@
 import React from 'react';
 import { Settings, Bell, Shield, Crown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Switch } from '@/components/ui/switch.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
 
 export default function SettingsSection({ userProfile, handlePreferenceChange }) {
   const { toast } = useToast();

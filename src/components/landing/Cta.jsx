@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
 
 export default function Cta({ onNavigate }) {
   const { toast } = useToast();
