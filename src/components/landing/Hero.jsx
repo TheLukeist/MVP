@@ -29,7 +29,7 @@ const slides = [
     description: "Biblioteca completa de ejercicios diseñados para mejorar tu equilibrio, fuerza y flexibilidad. Previene caídas y mantente activo de forma segura.",
     features: ["Prevención de caídas", "Ejercicios en casa", "Progreso personalizado"],
     gradient: "bg-gradient-to-r from-green-500 to-green-600",
-    cta: "Ver Demo",
+    cta: "Comenzar Ahora",
   },
   {
     id: 4,
@@ -56,15 +56,8 @@ export default function Hero({ onNavigate }) {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   const handleCTA = (slide) => {
-    if (slide.cta === "Ver Demo") {
-      // Scroll suave hacia la sección de servicios
-      const servicesSection = document.querySelector('#services-section');
-      if (servicesSection) {
-        servicesSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      onNavigate('auth');
-    }
+    // Todos los botones ahora dicen "Comenzar Ahora" y van a auth
+    onNavigate('auth');
   };
 
   return (
