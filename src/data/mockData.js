@@ -199,6 +199,44 @@ export const mockExercises = [
       "Repite 3-4 veces."
     ],
     benefits: ["Alivia tensión", "Mejora postura", "Reduce dolor de espalda"]
+  },
+  {
+    id: 7,
+    name: "Respiración Profunda",
+    category: "Yoga",
+    duration: "8 min",
+    difficulty: "Muy Fácil",
+    description: "Técnica de respiración para relajar el cuerpo y la mente.",
+    imageDescription: "Persona mayor practicando respiración profunda en posición sentada.",
+    image: "https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg",
+    videoUrl: "https://www.youtube.com/embed/YRPh_GaiL8s",
+    instructions: [
+      "Siéntate cómodamente con la espalda recta.",
+      "Coloca una mano en el pecho y otra en el abdomen.",
+      "Inhala lentamente por la nariz, sintiendo cómo se expande el abdomen.",
+      "Exhala lentamente por la boca, vaciando completamente los pulmones.",
+      "Repite durante 8 minutos, manteniendo un ritmo constante."
+    ],
+    benefits: ["Reduce estrés", "Mejora concentración", "Relaja el cuerpo"]
+  },
+  {
+    id: 8,
+    name: "Flexiones de Pared",
+    category: "Fuerza",
+    duration: "4 min",
+    difficulty: "Fácil",
+    description: "Ejercicio de fuerza adaptado para fortalecer brazos y pecho de forma segura.",
+    imageDescription: "Persona mayor realizando flexiones contra una pared.",
+    image: "https://images.pexels.com/photos/6111597/pexels-photo-6111597.jpeg",
+    videoUrl: "https://www.youtube.com/embed/R4Y8A0uXoQE",
+    instructions: [
+      "Párate frente a una pared, a un brazo de distancia.",
+      "Coloca las palmas contra la pared a la altura de los hombros.",
+      "Inclínate hacia la pared doblando los codos.",
+      "Empuja para volver a la posición inicial.",
+      "Realiza 10-15 repeticiones."
+    ],
+    benefits: ["Fortalece brazos", "Mejora postura", "Aumenta fuerza del core"]
   }
 ];
 
@@ -256,13 +294,14 @@ export const defaultUser = {
     shareProgress: true
   },
   weeklyProgress: {
-    sessionsCompleted: 3,
-    totalSessions: 5,
-    exerciseMinutes: 135,
-    weeklyGoal: 180
+    sessionsCompleted: 5,
+    totalSessions: 6,
+    exerciseMinutes: 240,
+    weeklyGoal: 300
   },
   progressHistory: [
-    { week: "Semana Pasada", sessions: 4, minutes: 160 },
+    { week: "Esta semana", sessions: 5, minutes: 240 },
+    { week: "Semana pasada", sessions: 4, minutes: 160 },
     { week: "Hace 2 semanas", sessions: 3, minutes: 120 },
     { week: "Hace 3 semanas", sessions: 4, minutes: 155 },
   ]

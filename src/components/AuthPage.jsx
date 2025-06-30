@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Eye, EyeOff, ArrowLeft, Search } from 'lucide-react';
+import { Activity, Eye, EyeOff, ArrowLeft, Search, TrendingUp, Calendar, Clock, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { Input } from '@/components/ui/input.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Progress } from '@/components/ui/progress.jsx';
 import { useToast } from '@/components/ui/use-toast.js';
 import { defaultUser } from '@/data/mockData.js';
 
@@ -12,6 +13,7 @@ export default function AuthPage({ onNavigate, onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showProgressViewer, setShowProgressViewer] = useState(false);
   const [progressCode, setProgressCode] = useState('');
+  const [sharedProgress, setSharedProgress] = useState(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -133,17 +135,35 @@ export default function AuthPage({ onNavigate, onLogin }) {
   const handleProgressView = (e) => {
     e.preventDefault();
     if (progressCode.trim()) {
+      // Simular datos de progreso compartido
+      const mockSharedProgress = {
+        userName: "María González",
+        age: 68,
+        memberSince: "15/03/2024",
+        weeklyProgress: {
+          sessionsCompleted: 4,
+          totalSessions: 5,
+          exerciseMinutes: 180,
+          weeklyGoal: 200
+        },
+        progressHistory: [
+          { week: "Esta semana", sessions: 4, minutes: 180 },
+          { week: "Semana pasada", sessions: 5, minutes: 200 },
+          { week: "Hace 2 semanas", sessions: 3, minutes: 150 },
+          { week: "Hace 3 semanas", sessions: 4, minutes: 170 },
+        ],
+        recentSessions: [
+          { name: "Yoga Suave", date: "Hoy", completed: true },
+          { name: "Equilibrio y Coordinación", date: "Ayer", completed: true },
+          { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
+        ]
+      };
+      
+      setSharedProgress(mockSharedProgress);
       toast({
         title: "Progreso encontrado",
-        description: `Mostrando progreso para el código: ${progressCode}`
+        description: `Mostrando progreso de ${mockSharedProgress.userName}`
       });
-      // Simular mostrar progreso
-      setTimeout(() => {
-        toast({
-          title: "Datos del progreso",
-          description: "Usuario: María González - 15 sesiones completadas este mes"
-        });
-      }, 1000);
     } else {
       toast({
         title: "Código requerido",
@@ -152,6 +172,101 @@ export default function AuthPage({ onNavigate, onLogin }) {
       });
     }
   };
+
+  const ProgressViewer = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold text-gray-900">
+            Progreso de {sharedProgress.userName}
+          </CardTitle>
+          <p className="text-gray-600">
+            {sharedProgress.age} años • Miembro desde {sharedProgress.memberSince}
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Progreso Semanal */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
+              Progreso Semanal
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Sesiones completadas</span>
+                  <span>{sharedProgress.weeklyProgress.sessionsCompleted}/{sharedProgress.weeklyProgress.totalSessions}</span>
+                </div>
+                <Progress value={(sharedProgress.weeklyProgress.sessionsCompleted / sharedProgress.weeklyProgress.totalSessions) * 100} />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Minutos de ejercicio</span>
+                  <span>{sharedProgress.weeklyProgress.exerciseMinutes}/{sharedProgress.weeklyProgress.weeklyGoal}</span>
+                </div>
+                <Progress value={(sharedProgress.weeklyProgress.exerciseMinutes / sharedProgress.weeklyProgress.weeklyGoal) * 100} />
+              </div>
+            </div>
+          </div>
+
+          {/* Historial */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Calendar className="w-5 h-5 mr-2 text-green-600" />
+              Historial de Progreso
+            </h3>
+            <div className="space-y-3">
+              {sharedProgress.progressHistory.map((week, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <span className="font-medium">{week.week}</span>
+                  <div className="flex space-x-4 text-sm text-gray-600">
+                    <span>{week.sessions} sesiones</span>
+                    <span>{week.minutes} minutos</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sesiones Recientes */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <CheckCircle className="w-5 h-5 mr-2 text-purple-600" />
+              Sesiones Recientes
+            </h3>
+            <div className="space-y-2">
+              {sharedProgress.recentSessions.map((session, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                  <div>
+                    <span className="font-medium text-gray-900">{session.name}</span>
+                    <p className="text-sm text-gray-600">{session.date}</p>
+                  </div>
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <Button onClick={() => {
+              setShowProgressViewer(false);
+              setSharedProgress(null);
+              setProgressCode('');
+            }} variant="outline" className="flex-1">
+              Volver
+            </Button>
+            <Button onClick={() => onNavigate('auth')} className="flex-1">
+              Crear mi cuenta
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -177,7 +292,9 @@ export default function AuthPage({ onNavigate, onLogin }) {
           </div>
         </div>
 
-        {!showProgressViewer ? (
+        {sharedProgress ? (
+          <ProgressViewer />
+        ) : !showProgressViewer ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -328,12 +445,15 @@ export default function AuthPage({ onNavigate, onLogin }) {
                     </label>
                     <Input
                       type="text"
-                      placeholder="Ingresa el código"
+                      placeholder="Ejemplo: ABC123"
                       value={progressCode}
                       onChange={(e) => setProgressCode(e.target.value)}
                       className="text-center font-mono text-lg"
                       maxLength={6}
                     />
+                    <p className="text-xs text-gray-500 mt-2">
+                      Prueba con cualquier código para ver el demo
+                    </p>
                   </div>
 
                   <Button type="submit" size="lg" className="w-full">
