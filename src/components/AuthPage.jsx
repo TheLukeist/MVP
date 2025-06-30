@@ -23,6 +23,10 @@ export default function AuthPage({ onNavigate, onLogin }) {
     phone: ''
   });
   const { toast } = useToast();
+  
+  // Move useLocalStorage calls to the top level of the component
+  const [storedUser] = useLocalStorage('userProfile', defaultUser);
+  const [completedSessions] = useLocalStorage('completedSessions', []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -136,11 +140,7 @@ export default function AuthPage({ onNavigate, onLogin }) {
   const handleProgressView = (e) => {
     e.preventDefault();
     if (progressCode.trim()) {
-      // Obtener datos reales del usuario Carlos Ruiz si existe
-      const [storedUser] = useLocalStorage('userProfile', defaultUser);
-      const [completedSessions] = useLocalStorage('completedSessions', []);
-      
-      // Si el código coincide con Carlos Ruiz, mostrar sus datos reales
+      // Use the stored data that was retrieved at the component level
       if (progressCode.toUpperCase() === 'CARLOS' || progressCode.toUpperCase() === 'CR2024') {
         const realProgress = {
           userName: storedUser.name,
