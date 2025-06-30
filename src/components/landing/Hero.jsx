@@ -100,7 +100,7 @@ export default function Hero({ onNavigate }) {
             </motion.div>
 
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex justify-center"
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1 }}
