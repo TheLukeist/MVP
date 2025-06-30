@@ -46,7 +46,37 @@ export default function AuthPage({ onNavigate, onLogin }) {
           title: "¡Bienvenido de vuelta!",
           description: "Has iniciado sesión correctamente."
         });
-        onLogin();
+        // Crear usuario temporal con datos básicos
+        const tempUser = {
+          name: formData.email.split('@')[0] || "Usuario",
+          email: formData.email,
+          age: 65,
+          phone: "",
+          address: "Santiago, Chile",
+          emergencyContact: "",
+          memberSince: new Date().toLocaleDateString('es-CL'),
+          isPremium: false,
+          healthMetrics: {
+            weight: "70 kg",
+            height: "1.70 m",
+            bloodPressure: "120/80",
+            heartRate: "75 bpm"
+          },
+          preferences: {
+            notifications: true,
+            privateMode: false,
+            medicationReminders: true,
+            shareProgress: true
+          },
+          weeklyProgress: {
+            sessionsCompleted: 0,
+            totalSessions: 4,
+            exerciseMinutes: 0,
+            weeklyGoal: 240
+          },
+          progressHistory: []
+        };
+        onLogin(tempUser);
       } else {
         toast({
           title: "Error de inicio de sesión",
@@ -62,10 +92,32 @@ export default function AuthPage({ onNavigate, onLogin }) {
         });
         const newUserData = {
           name: formData.name,
-          age: formData.age,
+          age: parseInt(formData.age) || 0,
           email: formData.email,
-          phone: formData.phone,
+          phone: formData.phone || "",
+          address: "Santiago, Chile",
+          emergencyContact: "",
           memberSince: new Date().toLocaleDateString('es-CL'),
+          isPremium: false,
+          healthMetrics: {
+            weight: "70 kg",
+            height: "1.70 m",
+            bloodPressure: "120/80",
+            heartRate: "75 bpm"
+          },
+          preferences: {
+            notifications: true,
+            privateMode: false,
+            medicationReminders: true,
+            shareProgress: true
+          },
+          weeklyProgress: {
+            sessionsCompleted: 0,
+            totalSessions: 4,
+            exerciseMinutes: 0,
+            weeklyGoal: 240
+          },
+          progressHistory: []
         };
         onLogin(newUserData);
       } else {
@@ -85,6 +137,13 @@ export default function AuthPage({ onNavigate, onLogin }) {
         title: "Progreso encontrado",
         description: `Mostrando progreso para el código: ${progressCode}`
       });
+      // Simular mostrar progreso
+      setTimeout(() => {
+        toast({
+          title: "Datos del progreso",
+          description: "Usuario: María González - 15 sesiones completadas este mes"
+        });
+      }, 1000);
     } else {
       toast({
         title: "Código requerido",
@@ -162,6 +221,8 @@ export default function AuthPage({ onNavigate, onLogin }) {
                           placeholder="Ingresa tu edad"
                           value={formData.age}
                           onChange={handleInputChange}
+                          min="18"
+                          max="120"
                         />
                       </div>
                       <div>

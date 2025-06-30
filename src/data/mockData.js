@@ -10,7 +10,8 @@ export const mockSessions = [
     participants: "8/12 participantes",
     type: "Presencial",
     status: "Disponible",
-    category: "equilibrio"
+    category: "equilibrio",
+    image: "https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg"
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ export const mockSessions = [
     participants: "15/20 participantes",
     type: "Online",
     status: "Disponible",
-    category: "yoga"
+    category: "yoga",
+    image: "https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ export const mockSessions = [
     participants: "10/15 participantes",
     type: "Presencial",
     status: "Disponible",
-    category: "acuaticos"
+    category: "acuaticos",
+    image: "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg"
   },
   {
     id: 4,
@@ -49,7 +52,8 @@ export const mockSessions = [
     participants: "12/12 participantes",
     type: "Presencial",
     status: "Completo",
-    category: "fuerza"
+    category: "fuerza",
+    image: "https://images.pexels.com/photos/6111597/pexels-photo-6111597.jpeg"
   },
   {
     id: 5,
@@ -62,7 +66,8 @@ export const mockSessions = [
     participants: "11/20 participantes",
     type: "Online",
     status: "Disponible",
-    category: "flexibilidad"
+    category: "flexibilidad",
+    image: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg"
   },
   {
     id: 6,
@@ -75,7 +80,8 @@ export const mockSessions = [
     participants: "18/25 participantes",
     type: "Presencial",
     status: "Disponible",
-    category: "cardio"
+    category: "cardio",
+    image: "https://images.pexels.com/photos/6111593/pexels-photo-6111593.jpeg"
   }
 ];
 
@@ -88,6 +94,8 @@ export const mockExercises = [
     difficulty: "Fácil",
     description: "Ejercicio suave para mejorar la movilidad de hombros y brazos, ideal para empezar el día.",
     imageDescription: "Persona mayor sentada en una silla levantando los brazos hacia los lados.",
+    image: "https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     instructions: [
       "Siéntate cómodamente en una silla con la espalda recta.",
       "Levanta los brazos lentamente hacia los lados, hasta la altura de los hombros.",
@@ -95,7 +103,6 @@ export const mockExercises = [
       "Baja los brazos lentamente a la posición inicial.",
       "Repite el movimiento 10 veces."
     ],
-    videoUrl: "https://example.com/video1",
     benefits: ["Mejora la movilidad", "Fortalece hombros", "Reduce rigidez"]
   },
   {
@@ -106,6 +113,8 @@ export const mockExercises = [
     difficulty: "Fácil",
     description: "Ejercicio cardiovascular suave para activar la circulación, usando una silla para mayor seguridad.",
     imageDescription: "Persona mayor marchando en el lugar mientras se apoya en el respaldo de una silla.",
+    image: "https://images.pexels.com/photos/6111593/pexels-photo-6111593.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     instructions: [
       "Ponte de pie detrás de una silla firme, sujetando el respaldo.",
       "Levanta una rodilla hacia el pecho, como si marcharas.",
@@ -113,7 +122,6 @@ export const mockExercises = [
       "Mantén la espalda recta y la mirada al frente.",
       "Continúa por 3 minutos."
     ],
-    videoUrl: "https://example.com/video2",
     benefits: ["Mejora la circulación", "Fortalece piernas", "Aumenta resistencia"]
   },
   {
@@ -124,6 +132,8 @@ export const mockExercises = [
     difficulty: "Muy Fácil",
     description: "Ejercicio para aliviar la tensión del cuello y mejorar la flexibilidad, perfecto para relajar.",
     imageDescription: "Primer plano de una persona mayor girando suavemente el cuello hacia un lado.",
+    image: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     instructions: [
       "Siéntate con la espalda recta y los hombros relajados.",
       "Gira la cabeza lentamente hacia la derecha, hasta donde sea cómodo.",
@@ -131,7 +141,6 @@ export const mockExercises = [
       "Regresa al centro y gira lentamente hacia la izquierda.",
       "Repite 5 veces para cada lado."
     ],
-    videoUrl: "https://example.com/video3",
     benefits: ["Alivia tensión", "Mejora flexibilidad", "Reduce dolor de cuello"]
   },
   {
@@ -142,6 +151,8 @@ export const mockExercises = [
     difficulty: "Moderado",
     description: "Fortalece tus piernas y glúteos de forma segura usando una silla como guía y apoyo.",
     imageDescription: "Persona mayor realizando una sentadilla, usando una silla detrás como guía de seguridad.",
+    image: "https://images.pexels.com/photos/6111597/pexels-photo-6111597.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     instructions: [
       "Párate frente a una silla, con los pies separados al ancho de los hombros.",
       "Baja lentamente la cadera como si fueras a sentarte, manteniendo la espalda recta.",
@@ -149,7 +160,6 @@ export const mockExercises = [
       "Usa los brazos al frente para mantener el equilibrio.",
       "Realiza de 8 a 12 repeticiones."
     ],
-    videoUrl: "https://example.com/video4",
     benefits: ["Fortalece piernas", "Mejora el equilibrio", "Aumenta la fuerza funcional"]
   },
   {
@@ -160,6 +170,8 @@ export const mockExercises = [
     difficulty: "Moderado",
     description: "Un ejercicio clave para mejorar la estabilidad y prevenir caídas.",
     imageDescription: "Persona mayor de pie sobre una pierna, con la otra rodilla levantada, manteniendo el equilibrio.",
+    image: "https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     instructions: [
       "Párate cerca de una pared o silla para apoyarte si es necesario.",
       "Levanta un pie del suelo, doblando la rodilla.",
@@ -167,8 +179,26 @@ export const mockExercises = [
       "Baja el pie y repite con la otra pierna.",
       "Realiza 3 repeticiones por cada pierna."
     ],
-    videoUrl: "https://example.com/video5",
     benefits: ["Previene caídas", "Mejora la estabilidad", "Fortalece tobillos"]
+  },
+  {
+    id: 6,
+    name: "Estiramiento de Espalda",
+    category: "Flexibilidad",
+    duration: "6 min",
+    difficulty: "Fácil",
+    description: "Ejercicio para aliviar la tensión en la espalda y mejorar la postura.",
+    imageDescription: "Persona mayor realizando estiramiento de espalda sentada.",
+    image: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    instructions: [
+      "Siéntate en el borde de una silla con los pies en el suelo.",
+      "Entrelaza los dedos y estira los brazos hacia adelante.",
+      "Redondea la espalda y siente el estiramiento entre los omóplatos.",
+      "Mantén por 15-20 segundos.",
+      "Repite 3-4 veces."
+    ],
+    benefits: ["Alivia tensión", "Mejora postura", "Reduce dolor de espalda"]
   }
 ];
 

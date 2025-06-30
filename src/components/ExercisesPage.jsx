@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Clock, Star, ChevronRight, Dumbbell } from 'lucide-react';
+import { Play, Clock, Star, ChevronRight, Dumbbell, X } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Badge } from '@/components/ui/badge.jsx';
@@ -11,6 +11,7 @@ import { mockExercises, categories } from '@/data/mockData.js';
 export default function ExercisesPage() {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Todas');
+  const [showVideo, setShowVideo] = useState(false);
   const { toast } = useToast();
 
   const getDifficultyColor = (difficulty) => {
@@ -30,23 +31,68 @@ export default function ExercisesPage() {
     });
   };
 
+  const handleWatchVideo = (exercise) => {
+    setShowVideo(true);
+    toast({
+      title: `Reproduciendo video: ${exercise.name}`,
+      description: "Sigue las instrucciones del video cuidadosamente."
+    });
+  };
+
   const filteredExercises = activeCategory === 'Todas'
     ? mockExercises
     : mockExercises.filter(ex => ex.category.toLowerCase() === activeCategory.toLowerCase());
 
   const ExerciseModal = ({ exercise }) => (
-    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
       <DialogHeader>
         <DialogTitle className="text-2xl font-bold">{exercise.name}</DialogTitle>
       </DialogHeader>
       <div className="space-y-6 py-4">
-        <div className="exercise-video flex-col">
-          <Play className="w-12 h-12 text-gray-400" />
-          <p className="mt-2">Video demostrativo del ejercicio</p>
-        </div>
-        <div className="text-center">
-          <img  alt={`Demostración del ejercicio ${exercise.name}`} className="w-full max-w-md mx-auto rounded-lg shadow-md" src="https://images.unsplash.com/photo-1522152881874-22fcbf9cc1fd" />
-        </div>
+        {showVideo ? (
+          <div className="relative">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Video del Ejercicio</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowVideo(false)}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Cerrar Video
+              </Button>
+            </div>
+            <div className="aspect-video w-full">
+              <iframe
+                width="100%"
+                height="100%"
+                src={exercise.videoUrl}
+                title={`Video de ${exercise.name}`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="rounded-lg"
+              ></iframe>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center">
+            <img 
+              src={exercise.image} 
+              alt={exercise.imageDescription} 
+              className="w-full max-w-md mx-auto rounded-lg shadow-md object-cover h-64"
+            />
+            <Button 
+              onClick={() => handleWatchVideo(exercise)} 
+              className="mt-4"
+              variant="outline"
+            >
+              <Play className="w-4 h-4 mr-2" />
+              Ver Video Demostrativo
+            </Button>
+          </div>
+        )}
+        
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <Clock className="w-6 h-6 text-blue-600 mx-auto mb-2" />
@@ -87,11 +133,17 @@ export default function ExercisesPage() {
             ))}
           </div>
         </div>
-        <div className="text-center pt-4">
+        <div className="text-center pt-4 flex gap-4 justify-center">
           <Button onClick={() => handleStartExercise(exercise)} size="lg">
             <Play className="w-5 h-5 mr-2" />
             Comenzar Ejercicio
           </Button>
+          {!showVideo && (
+            <Button onClick={() => handleWatchVideo(exercise)} variant="outline" size="lg">
+              <Play className="w-5 h-5 mr-2" />
+              Ver Video
+            </Button>
+          )}
         </div>
       </div>
     </DialogContent>
@@ -125,7 +177,12 @@ export default function ExercisesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredExercises.map((exercise, index) => (
           <motion.div key={exercise.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
-            <Dialog onOpenChange={(open) => !open && setSelectedExercise(null)}>
+            <Dialog onOpenChange={(open) => {
+              if (!open) {
+                setSelectedExercise(null);
+                setShowVideo(false);
+              }
+            }}>
               <Card className="h-full flex flex-col hover:shadow-lg transition-shadow group">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between">
@@ -138,7 +195,11 @@ export default function ExercisesPage() {
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col">
                   <div className="mb-4">
-                    <img  alt={exercise.imageDescription} className="w-full h-40 object-cover rounded-lg" src="https://images.unsplash.com/photo-1623874400767-0fcdeedd0f5d" />
+                    <img 
+                      src={exercise.image} 
+                      alt={exercise.imageDescription} 
+                      className="w-full h-40 object-cover rounded-lg"
+                    />
                   </div>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{exercise.description}</p>
                   <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
