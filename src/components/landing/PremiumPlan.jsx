@@ -21,7 +21,7 @@ export default function PremiumPlan({ onNavigate }) {
               Plan Premium 3M
             </h2>
             <p className="text-xl text-gray-600">
-              Accede a beneficios exclusivos por solo $4.990 CLP/mes
+              Accede a beneficios exclusivos por solo $3.990 CLP/mes
             </p>
           </div>
 
@@ -42,7 +42,7 @@ export default function PremiumPlan({ onNavigate }) {
               </div>
               <div className="text-center">
                 <div className="bg-blue-600 text-white rounded-2xl p-8 mb-6">
-                  <div className="text-4xl font-bold mb-2">$4.990</div>
+                  <div className="text-4xl font-bold mb-2">$3.990</div>
                   <div className="text-blue-100">CLP/mes</div>
                 </div>
                 <Button 
