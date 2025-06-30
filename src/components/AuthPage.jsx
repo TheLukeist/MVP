@@ -171,7 +171,7 @@ export default function AuthPage({ onNavigate, onLogin }) {
           showMockProgress();
         }
       } else if (progressCode.toUpperCase() === 'CARLOS' || progressCode.toUpperCase() === 'CR2024') {
-        // Datos específicos de Carlos con progreso real
+        // Datos específicos de Carlos con progreso real hardcodeado
         const carlosProgress = {
           userName: "Carlos Ruiz",
           age: 72,
