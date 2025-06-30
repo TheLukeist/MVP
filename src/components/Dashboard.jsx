@@ -59,6 +59,10 @@ export default function Dashboard({ onLogout }) {
     const myUpcomingSessions = mockSessions.filter(session => bookedSessions.includes(session.id));
     const myCompletedSessions = mockSessions.filter(session => completedSessions.includes(session.id));
 
+    // Calcular progreso real basado en sesiones completadas
+    const realSessionsCompleted = completedSessions.length;
+    const realTotalSessions = user.weeklyProgress.totalSessions;
+
     return (
       <div className="space-y-6">
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white">
@@ -69,7 +73,7 @@ export default function Dashboard({ onLogout }) {
             </div>
             <div className="text-right">
               <div className="text-sm opacity-75">Progreso semanal</div>
-              <div className="text-2xl font-bold">{user.weeklyProgress.totalSessions > 0 ? Math.round((user.weeklyProgress.sessionsCompleted / user.weeklyProgress.totalSessions) * 100) : 0}%</div>
+              <div className="text-2xl font-bold">{realTotalSessions > 0 ? Math.round((realSessionsCompleted / realTotalSessions) * 100) : 0}%</div>
             </div>
           </div>
         </div>
@@ -187,9 +191,9 @@ export default function Dashboard({ onLogout }) {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span>Sesiones completadas</span>
-                  <span>{completedSessions.length}/{user.weeklyProgress.totalSessions}</span>
+                  <span>{realSessionsCompleted}/{realTotalSessions}</span>
                 </div>
-                <Progress value={user.weeklyProgress.totalSessions > 0 ? (completedSessions.length / user.weeklyProgress.totalSessions) * 100 : 0} />
+                <Progress value={realTotalSessions > 0 ? (realSessionsCompleted / realTotalSessions) * 100 : 0} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
