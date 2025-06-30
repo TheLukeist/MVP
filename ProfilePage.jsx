@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Edit, Save, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { mockUser } from '@/data/mockData';
+import { Button } from '@/components/ui/button.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import { useLocalStorage } from '@/hooks/useLocalStorage.js';
+import { mockUser } from '@/data/mockData.js';
 
-import ProfileHeader from '@/components/profile/ProfileHeader';
-import PersonalInformation from '@/components/profile/PersonalInformation';
-import HealthMetrics from '@/components/profile/HealthMetrics';
-import ProgressSection from '@/components/profile/ProgressSection';
-import SettingsSection from '@/components/profile/SettingsSection';
+import ProfileHeader from '@/components/profile/ProfileHeader.jsx';
+import PersonalInformation from '@/components/profile/PersonalInformation.jsx';
+import HealthMetrics from '@/components/profile/HealthMetrics.jsx';
+import ProgressSection from '@/components/profile/ProgressSection.jsx';
+import SettingsSection from '@/components/profile/SettingsSection.jsx';
 
 export default function ProfilePage() {
   const [userProfile, setUserProfile] = useLocalStorage('userProfile', mockUser);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Eye, EyeOff, ArrowLeft, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
-import { defaultUser } from '@/data/mockData';
+import { Button } from '@/components/ui/button.jsx';
+import { Input } from '@/components/ui/input.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import { defaultUser } from '@/data/mockData.js';
 
 export default function AuthPage({ onNavigate, onLogin }) {
   const [isLogin, setIsLogin] = useState(true);

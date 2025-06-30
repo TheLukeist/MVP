@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Clock, Star, ChevronRight, Dumbbell } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
-import { mockExercises, categories } from '@/data/mockData';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import { mockExercises, categories } from '@/data/mockData.js';
 
 export default function ExercisesPage() {
   const [selectedExercise, setSelectedExercise] = useState(null);

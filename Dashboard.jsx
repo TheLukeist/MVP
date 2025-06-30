@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Home, Calendar, Dumbbell, User, Bell, LogOut, Menu, X, TrendingUp, Clock, Users, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/components/ui/use-toast';
-import SessionsPage from './SessionsPage';
-import ExercisesPage from './ExercisesPage';
-import ProfilePage from './ProfilePage';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { mockUser as defaultUser, mockSessions } from '@/data/mockData';
+import { Button } from '@/components/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
+import { Badge } from '@/components/ui/badge.jsx';
+import { Progress } from '@/components/ui/progress.jsx';
+import { useToast } from '@/components/ui/use-toast.js';
+import SessionsPage from './SessionsPage.jsx';
+import ExercisesPage from './ExercisesPage.jsx';
+import ProfilePage from './ProfilePage.jsx';
+import { useLocalStorage } from '@/hooks/useLocalStorage.js';
+import { mockUser as defaultUser, mockSessions } from '@/data/mockData.js';
 
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('home');

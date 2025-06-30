@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Toaster } from '@/components/ui/toaster';
-import LandingPage from '@/components/LandingPage';
-import AuthPage from '@/components/AuthPage';
-import Dashboard from '@/components/Dashboard';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { mockUser, defaultUser } from '@/data/mockData';
+import { Toaster } from '@/components/ui/toaster.jsx';
+import LandingPage from '@/components/LandingPage.jsx';
+import AuthPage from '@/components/AuthPage.jsx';
+import Dashboard from '@/components/Dashboard.jsx';
+import { useLocalStorage } from '@/hooks/useLocalStorage.js';
+import { mockUser, defaultUser } from '@/data/mockData.js';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
