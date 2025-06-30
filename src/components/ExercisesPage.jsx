@@ -66,7 +66,8 @@ export default function ExercisesPage() {
   };
 
   const handleSaveRoutine = () => {
-    if (!newRoutineName.trim()) {
+    // Validar que el nombre no esté vacío
+    if (!newRoutineName || newRoutineName.trim() === '') {
       toast({
         title: "Nombre requerido",
         description: "Por favor, ingresa un nombre para tu rutina.",
@@ -75,6 +76,7 @@ export default function ExercisesPage() {
       return;
     }
 
+    // Validar que haya ejercicios seleccionados
     if (selectedExercisesForRoutine.length === 0) {
       toast({
         title: "Ejercicios requeridos",
@@ -86,7 +88,7 @@ export default function ExercisesPage() {
 
     const newRoutine = {
       id: Date.now(),
-      name: newRoutineName,
+      name: newRoutineName.trim(), // Asegurar que se guarde el nombre limpio
       exercises: selectedExercisesForRoutine,
       createdAt: new Date().toLocaleDateString('es-CL'),
       totalDuration: selectedExercisesForRoutine.reduce((total, ex) => {
@@ -96,6 +98,8 @@ export default function ExercisesPage() {
     };
 
     setCustomRoutines([...customRoutines, newRoutine]);
+    
+    // Limpiar el formulario
     setNewRoutineName('');
     setSelectedExercisesForRoutine([]);
     setShowCreateRoutine(false);
@@ -245,14 +249,18 @@ export default function ExercisesPage() {
       <div className="space-y-6 py-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Nombre de la rutina
+            Nombre de la rutina *
           </label>
           <Input
             value={newRoutineName}
             onChange={(e) => setNewRoutineName(e.target.value)}
             placeholder="Ej: Mi rutina matutina"
             className="w-full"
+            maxLength={50}
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Ingresa un nombre descriptivo para tu rutina personalizada
+          </p>
         </div>
 
         {selectedExercisesForRoutine.length > 0 && (
@@ -316,7 +324,12 @@ export default function ExercisesPage() {
         </div>
 
         <div className="flex gap-4 pt-4">
-          <Button onClick={handleSaveRoutine} size="lg" className="flex-1">
+          <Button 
+            onClick={handleSaveRoutine} 
+            size="lg" 
+            className="flex-1"
+            disabled={!newRoutineName.trim() || selectedExercisesForRoutine.length === 0}
+          >
             <Save className="w-5 h-5 mr-2" />
             Guardar Rutina
           </Button>

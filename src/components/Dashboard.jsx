@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Home, Calendar, Dumbbell, User, Bell, LogOut, Menu, X, TrendingUp, Clock, Users, MapPin } from 'lucide-react';
+import { Activity, Home, Calendar, Dumbbell, User, Bell, LogOut, Menu, X, TrendingUp, Clock, Users, MapPin, Coins } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Badge } from '@/components/ui/badge.jsx';
@@ -15,10 +15,35 @@ import { mockUser as defaultUser, mockSessions } from '@/data/mockData.js';
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [user] = useLocalStorage('userProfile', defaultUser);
+  const [user, setUser] = useLocalStorage('userProfile', defaultUser);
   const [bookedSessions] = useLocalStorage('bookedSessions', []);
   const [completedSessions] = useLocalStorage('completedSessions', []);
+  const [userCoins, setUserCoins] = useLocalStorage('userCoins', 0);
   const { toast } = useToast();
+
+  // Sincronizar monedas con sesiones completadas
+  useEffect(() => {
+    const newCoins = completedSessions.length;
+    if (newCoins !== userCoins) {
+      setUserCoins(newCoins);
+    }
+  }, [completedSessions.length, userCoins, setUserCoins]);
+
+  // Actualizar progreso del usuario basado en sesiones completadas reales
+  useEffect(() => {
+    const realSessionsCompleted = completedSessions.length;
+    if (user.weeklyProgress.sessionsCompleted !== realSessionsCompleted) {
+      const updatedUser = {
+        ...user,
+        weeklyProgress: {
+          ...user.weeklyProgress,
+          sessionsCompleted: realSessionsCompleted,
+          exerciseMinutes: realSessionsCompleted * 45 // 45 minutos promedio por sesión
+        }
+      };
+      setUser(updatedUser);
+    }
+  }, [completedSessions.length, user, setUser]);
 
   const menuItems = [
     { id: 'home', label: 'Inicio', icon: Home },
@@ -59,9 +84,11 @@ export default function Dashboard({ onLogout }) {
     const myUpcomingSessions = mockSessions.filter(session => bookedSessions.includes(session.id));
     const myCompletedSessions = mockSessions.filter(session => completedSessions.includes(session.id));
 
-    // Calcular progreso real basado en sesiones completadas
-    const realSessionsCompleted = completedSessions.length;
+    // Usar progreso real actualizado
+    const realSessionsCompleted = user.weeklyProgress.sessionsCompleted;
     const realTotalSessions = user.weeklyProgress.totalSessions;
+    const realExerciseMinutes = user.weeklyProgress.exerciseMinutes;
+    const realWeeklyGoal = user.weeklyProgress.weeklyGoal;
 
     return (
       <div className="space-y-6">
@@ -70,6 +97,10 @@ export default function Dashboard({ onLogout }) {
             <div>
               <h1 className="text-2xl font-bold mb-2">¡Hola, {user.name}!</h1>
               <p className="opacity-90">Bienvenido/a a tu panel de bienestar</p>
+              <div className="flex items-center mt-2">
+                <Coins className="w-4 h-4 mr-1" />
+                <span className="text-sm font-medium">{userCoins} monedas 3M</span>
+              </div>
             </div>
             <div className="text-right">
               <div className="text-sm opacity-75">Progreso semanal</div>
@@ -143,6 +174,10 @@ export default function Dashboard({ onLogout }) {
                       {myCompletedSessions.length}
                     </div>
                     <div className="text-sm text-gray-600">Sesiones completadas</div>
+                    <div className="flex items-center justify-center mt-2">
+                      <Coins className="w-4 h-4 text-yellow-500 mr-1" />
+                      <span className="text-sm font-medium text-gray-700">{userCoins} monedas ganadas</span>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     {myCompletedSessions.slice(0, 2).map((session) => (
@@ -198,9 +233,9 @@ export default function Dashboard({ onLogout }) {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span>Minutos de ejercicio</span>
-                  <span>{user.weeklyProgress.exerciseMinutes}/{user.weeklyProgress.weeklyGoal}</span>
+                  <span>{realExerciseMinutes}/{realWeeklyGoal}</span>
                 </div>
-                <Progress value={user.weeklyProgress.weeklyGoal > 0 ? (user.weeklyProgress.exerciseMinutes / user.weeklyProgress.weeklyGoal) * 100 : 0} />
+                <Progress value={realWeeklyGoal > 0 ? (realExerciseMinutes / realWeeklyGoal) * 100 : 0} />
               </div>
             </div>
           </CardContent>
@@ -245,6 +280,10 @@ export default function Dashboard({ onLogout }) {
               {user.isPremium && (
                 <Badge className="bg-yellow-500 text-white hidden sm:inline-flex">Premium</Badge>
               )}
+              <div className="hidden sm:flex items-center bg-gray-100 rounded-full px-3 py-1">
+                <Coins className="w-4 h-4 text-yellow-500 mr-1" />
+                <span className="text-sm font-medium text-gray-700">{userCoins}</span>
+              </div>
               <Button variant="ghost" size="icon" onClick={handleNotification}>
                 <Bell className="w-6 h-6" />
               </Button>

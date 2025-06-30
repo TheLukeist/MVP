@@ -264,9 +264,9 @@ export const mockUser = {
   },
   weeklyProgress: {
     sessionsCompleted: 0,
-    totalSessions: 4,
+    totalSessions: 6,
     exerciseMinutes: 0,
-    weeklyGoal: 240
+    weeklyGoal: 270
   },
   progressHistory: []
 };
@@ -296,14 +296,14 @@ export const defaultUser = {
   weeklyProgress: {
     sessionsCompleted: 5,
     totalSessions: 6,
-    exerciseMinutes: 240,
-    weeklyGoal: 300
+    exerciseMinutes: 225,
+    weeklyGoal: 270
   },
   progressHistory: [
-    { week: "Esta semana", sessions: 5, minutes: 240 },
-    { week: "Semana pasada", sessions: 4, minutes: 160 },
-    { week: "Hace 2 semanas", sessions: 3, minutes: 120 },
-    { week: "Hace 3 semanas", sessions: 4, minutes: 155 },
+    { week: "Esta semana", sessions: 5, minutes: 225 },
+    { week: "Semana pasada", sessions: 4, minutes: 180 },
+    { week: "Hace 2 semanas", sessions: 3, minutes: 135 },
+    { week: "Hace 3 semanas", sessions: 4, minutes: 180 },
   ]
 };
 

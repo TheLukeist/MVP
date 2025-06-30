@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
 import { Input } from '@/components/ui/input.jsx';
@@ -15,6 +15,7 @@ export default function ProgressSection({ userProfile }) {
   // Calcular progreso real basado en sesiones completadas
   const realSessionsCompleted = completedSessions.length;
   const realTotalSessions = userProfile.weeklyProgress.totalSessions;
+  const realExerciseMinutes = realSessionsCompleted * 45; // 45 minutos promedio por sesión
 
   const generateShareCode = () => {
     // Generar código basado en el usuario actual
@@ -30,7 +31,7 @@ export default function ProgressSection({ userProfile }) {
     
     setShareCode(code);
     
-    // Guardar los datos del usuario actual para compartir
+    // Guardar los datos del usuario actual para compartir con progreso real
     const shareData = {
       userName: userProfile.name,
       age: userProfile.age,
@@ -38,10 +39,13 @@ export default function ProgressSection({ userProfile }) {
       weeklyProgress: {
         sessionsCompleted: realSessionsCompleted,
         totalSessions: realTotalSessions,
-        exerciseMinutes: userProfile.weeklyProgress.exerciseMinutes,
+        exerciseMinutes: realExerciseMinutes,
         weeklyGoal: userProfile.weeklyProgress.weeklyGoal
       },
-      progressHistory: userProfile.progressHistory,
+      progressHistory: [
+        { week: "Esta semana", sessions: realSessionsCompleted, minutes: realExerciseMinutes },
+        ...userProfile.progressHistory.slice(1)
+      ],
       completedSessionsCount: realSessionsCompleted
     };
     
@@ -67,7 +71,7 @@ export default function ProgressSection({ userProfile }) {
     : 0;
     
   const minutesPercentage = userProfile.weeklyProgress.weeklyGoal > 0 
-    ? (userProfile.weeklyProgress.exerciseMinutes / userProfile.weeklyProgress.weeklyGoal) * 100
+    ? (realExerciseMinutes / userProfile.weeklyProgress.weeklyGoal) * 100
     : 0;
 
   return (
@@ -88,7 +92,7 @@ export default function ProgressSection({ userProfile }) {
             <div>
               <div className="flex justify-between text-sm mb-2">
                 <span>Minutos de ejercicio</span>
-                <span>{userProfile.weeklyProgress.exerciseMinutes}/{userProfile.weeklyProgress.weeklyGoal}</span>
+                <span>{realExerciseMinutes}/{userProfile.weeklyProgress.weeklyGoal}</span>
               </div>
               <Progress value={minutesPercentage} />
             </div>
@@ -103,7 +107,16 @@ export default function ProgressSection({ userProfile }) {
         <CardContent>
           {userProfile.progressHistory.length > 0 ? (
             <div className="space-y-3">
-              {userProfile.progressHistory.map((week, index) => (
+              {/* Mostrar progreso actual como primera entrada */}
+              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <span className="font-medium">Esta semana</span>
+                <div className="flex space-x-4 text-sm text-gray-600">
+                  <span>{realSessionsCompleted} sesiones</span>
+                  <span>{realExerciseMinutes} minutos</span>
+                </div>
+              </div>
+              {/* Mostrar historial anterior */}
+              {userProfile.progressHistory.slice(1).map((week, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <span className="font-medium">{week.week}</span>
                   <div className="flex space-x-4 text-sm text-gray-600">
@@ -148,7 +161,7 @@ export default function ProgressSection({ userProfile }) {
               <div className="mt-3 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-700">
                   <strong>Código generado:</strong> {shareCode}<br />
-                  Comparte este código con tus familiares para que puedan ver tu progreso actual.
+                  Comparte este código con tus familiares para que puedan ver tu progreso actual: {realSessionsCompleted} sesiones completadas.
                 </p>
               </div>
             )}
