@@ -66,8 +66,7 @@ export default function ExercisesPage() {
   };
 
   const handleSaveRoutine = () => {
-    // Validar que el nombre no esté vacío
-    if (!newRoutineName || newRoutineName.trim() === '') {
+    if (!newRoutineName.trim()) {
       toast({
         title: "Nombre requerido",
         description: "Por favor, ingresa un nombre para tu rutina.",
@@ -76,7 +75,6 @@ export default function ExercisesPage() {
       return;
     }
 
-    // Validar que haya ejercicios seleccionados
     if (selectedExercisesForRoutine.length === 0) {
       toast({
         title: "Ejercicios requeridos",
@@ -88,7 +86,7 @@ export default function ExercisesPage() {
 
     const newRoutine = {
       id: Date.now(),
-      name: newRoutineName.trim(), // Asegurar que se guarde el nombre limpio
+      name: newRoutineName.trim(),
       exercises: selectedExercisesForRoutine,
       createdAt: new Date().toLocaleDateString('es-CL'),
       totalDuration: selectedExercisesForRoutine.reduce((total, ex) => {
