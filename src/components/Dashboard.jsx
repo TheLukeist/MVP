@@ -16,7 +16,8 @@ export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user] = useLocalStorage('userProfile', defaultUser);
-  const [bookedSessions] = useLocalStorage('bookedSessions', [1, 3]);
+  const [bookedSessions] = useLocalStorage('bookedSessions', []);
+  const [completedSessions] = useLocalStorage('completedSessions', []);
   const { toast } = useToast();
 
   const menuItems = [
@@ -56,6 +57,7 @@ export default function Dashboard({ onLogout }) {
 
   const HomePage = () => {
     const myUpcomingSessions = mockSessions.filter(session => bookedSessions.includes(session.id));
+    const myCompletedSessions = mockSessions.filter(session => completedSessions.includes(session.id));
 
     return (
       <div className="space-y-6">
@@ -72,45 +74,106 @@ export default function Dashboard({ onLogout }) {
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Calendar className="w-5 h-5 mr-2 text-blue-600" />
-              Mis Próximas Sesiones
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {myUpcomingSessions.length > 0 ? (
-              <div className="space-y-4">
-                {myUpcomingSessions.map((session) => (
-                  <div key={session.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900">{session.title}</h4>
-                      <div className="flex items-center mt-2 text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        <span className="mr-4">{session.date}</span>
-                        <Clock className="w-4 h-4 mr-1" />
-                        <span className="mr-4">{session.time}</span>
-                        <MapPin className="w-4 h-4 mr-1" />
-                        <span>{session.location}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                Mis Próximas Sesiones
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {myUpcomingSessions.length > 0 ? (
+                <div className="space-y-4">
+                  {myUpcomingSessions.slice(0, 3).map((session) => (
+                    <div key={session.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{session.title}</h4>
+                        <div className="flex items-center mt-2 text-sm text-gray-500">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          <span className="mr-4">{session.date}</span>
+                          <Clock className="w-4 h-4 mr-1" />
+                          <span className="mr-4">{session.time}</span>
+                          <MapPin className="w-4 h-4 mr-1" />
+                          <span>{session.location}</span>
+                        </div>
                       </div>
+                      <Badge variant={session.type === 'Online' ? 'secondary' : 'default'}>
+                        {session.type}
+                      </Badge>
                     </div>
-                    <Badge variant={session.type === 'Online' ? 'secondary' : 'default'}>
-                      {session.type}
-                    </Badge>
+                  ))}
+                  {myUpcomingSessions.length > 3 && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setActiveTab('sessions')}
+                      className="w-full"
+                    >
+                      Ver todas las sesiones ({myUpcomingSessions.length})
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 mb-4">No tienes sesiones reservadas.</p>
+                  <Button onClick={() => setActiveTab('sessions')}>
+                    Explorar Sesiones
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                Sesiones Completadas
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {myCompletedSessions.length > 0 ? (
+                <div className="space-y-4">
+                  <div className="text-center p-6 bg-green-50 rounded-lg">
+                    <div className="text-3xl font-bold text-green-600 mb-2">
+                      {myCompletedSessions.length}
+                    </div>
+                    <div className="text-sm text-gray-600">Sesiones completadas</div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">No tienes sesiones reservadas.</p>
-                <Button onClick={() => setActiveTab('sessions')}>
-                  Explorar Sesiones
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                  <div className="space-y-2">
+                    {myCompletedSessions.slice(0, 2).map((session) => (
+                      <div key={session.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 text-sm">{session.title}</h4>
+                          <p className="text-xs text-gray-500">{session.instructor}</p>
+                        </div>
+                        <Badge variant="success" className="text-xs">
+                          Completada
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                  {myCompletedSessions.length > 2 && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setActiveTab('sessions')}
+                      className="w-full"
+                    >
+                      Ver todas las completadas
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 mb-4">Aún no has completado sesiones.</p>
+                  <Button onClick={() => setActiveTab('sessions')}>
+                    Ver Sesiones Reservadas
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
         <Card>
           <CardHeader>
@@ -124,9 +187,9 @@ export default function Dashboard({ onLogout }) {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span>Sesiones completadas</span>
-                  <span>{user.weeklyProgress.sessionsCompleted}/{user.weeklyProgress.totalSessions}</span>
+                  <span>{completedSessions.length}/{user.weeklyProgress.totalSessions}</span>
                 </div>
-                <Progress value={user.weeklyProgress.totalSessions > 0 ? (user.weeklyProgress.sessionsCompleted / user.weeklyProgress.totalSessions) * 100 : 0} />
+                <Progress value={user.weeklyProgress.totalSessions > 0 ? (completedSessions.length / user.weeklyProgress.totalSessions) * 100 : 0} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">

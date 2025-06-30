@@ -95,7 +95,7 @@ export const mockExercises = [
     description: "Ejercicio suave para mejorar la movilidad de hombros y brazos, ideal para empezar el día.",
     imageDescription: "Persona mayor sentada en una silla levantando los brazos hacia los lados.",
     image: "https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/RqcOCBb4arc",
     instructions: [
       "Siéntate cómodamente en una silla con la espalda recta.",
       "Levanta los brazos lentamente hacia los lados, hasta la altura de los hombros.",
@@ -114,7 +114,7 @@ export const mockExercises = [
     description: "Ejercicio cardiovascular suave para activar la circulación, usando una silla para mayor seguridad.",
     imageDescription: "Persona mayor marchando en el lugar mientras se apoya en el respaldo de una silla.",
     image: "https://images.pexels.com/photos/6111593/pexels-photo-6111593.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/CBIonJtJGhk",
     instructions: [
       "Ponte de pie detrás de una silla firme, sujetando el respaldo.",
       "Levanta una rodilla hacia el pecho, como si marcharas.",
@@ -133,7 +133,7 @@ export const mockExercises = [
     description: "Ejercicio para aliviar la tensión del cuello y mejorar la flexibilidad, perfecto para relajar.",
     imageDescription: "Primer plano de una persona mayor girando suavemente el cuello hacia un lado.",
     image: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/wQylqaCl8Zo",
     instructions: [
       "Siéntate con la espalda recta y los hombros relajados.",
       "Gira la cabeza lentamente hacia la derecha, hasta donde sea cómodo.",
@@ -152,7 +152,7 @@ export const mockExercises = [
     description: "Fortalece tus piernas y glúteos de forma segura usando una silla como guía y apoyo.",
     imageDescription: "Persona mayor realizando una sentadilla, usando una silla detrás como guía de seguridad.",
     image: "https://images.pexels.com/photos/6111597/pexels-photo-6111597.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/YaXPRqUwItQ",
     instructions: [
       "Párate frente a una silla, con los pies separados al ancho de los hombros.",
       "Baja lentamente la cadera como si fueras a sentarte, manteniendo la espalda recta.",
@@ -171,7 +171,7 @@ export const mockExercises = [
     description: "Un ejercicio clave para mejorar la estabilidad y prevenir caídas.",
     imageDescription: "Persona mayor de pie sobre una pierna, con la otra rodilla levantada, manteniendo el equilibrio.",
     image: "https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/sw9-DQaqNgk",
     instructions: [
       "Párate cerca de una pared o silla para apoyarte si es necesario.",
       "Levanta un pie del suelo, doblando la rodilla.",
@@ -190,7 +190,7 @@ export const mockExercises = [
     description: "Ejercicio para aliviar la tensión en la espalda y mejorar la postura.",
     imageDescription: "Persona mayor realizando estiramiento de espalda sentada.",
     image: "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube.com/embed/4BOTvaRaDjI",
     instructions: [
       "Siéntate en el borde de una silla con los pies en el suelo.",
       "Entrelaza los dedos y estira los brazos hacia adelante.",
