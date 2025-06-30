@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.j
 import { Progress } from '@/components/ui/progress.jsx';
 import { useToast } from '@/components/ui/use-toast.js';
 import { defaultUser } from '@/data/mockData.js';
-import { useLocalStorage } from '@/hooks/useLocalStorage.js';
 
 export default function AuthPage({ onNavigate, onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -23,10 +22,6 @@ export default function AuthPage({ onNavigate, onLogin }) {
     phone: ''
   });
   const { toast } = useToast();
-  
-  // Move useLocalStorage calls to the top level of the component
-  const [storedUser] = useLocalStorage('userProfile', defaultUser);
-  const [completedSessions] = useLocalStorage('completedSessions', []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -140,64 +135,75 @@ export default function AuthPage({ onNavigate, onLogin }) {
   const handleProgressView = (e) => {
     e.preventDefault();
     if (progressCode.trim()) {
-      // Use the stored data that was retrieved at the component level
-      if (progressCode.toUpperCase() === 'CARLOS' || progressCode.toUpperCase() === 'CR2024') {
-        const realProgress = {
-          userName: storedUser.name,
-          age: storedUser.age,
-          memberSince: storedUser.memberSince,
+      // Buscar datos compartidos específicos del código
+      const shareData = localStorage.getItem(`shareData_${progressCode.toUpperCase()}`);
+      
+      if (shareData) {
+        try {
+          const parsedData = JSON.parse(shareData);
+          
+          // Crear sesiones recientes basadas en el número de sesiones completadas
+          const recentSessions = [
+            { name: "Equilibrio y Coordinación", date: "Hoy", completed: true },
+            { name: "Yoga Suave para Seniors", date: "Ayer", completed: true },
+            { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
+            { name: "Fortalecimiento Muscular", date: "Hace 3 días", completed: true },
+            { name: "Pilates para Flexibilidad", date: "Hace 4 días", completed: true },
+            { name: "Caminata Activa", date: "Hace 5 días", completed: true },
+          ].slice(0, parsedData.completedSessionsCount);
+          
+          const realProgress = {
+            userName: parsedData.userName,
+            age: parsedData.age,
+            memberSince: parsedData.memberSince,
+            weeklyProgress: parsedData.weeklyProgress,
+            progressHistory: parsedData.progressHistory,
+            recentSessions: recentSessions
+          };
+          
+          setSharedProgress(realProgress);
+          toast({
+            title: "Progreso encontrado",
+            description: `Mostrando progreso real de ${realProgress.userName}`
+          });
+        } catch (error) {
+          console.error('Error parsing share data:', error);
+          showMockProgress();
+        }
+      } else if (progressCode.toUpperCase() === 'CARLOS' || progressCode.toUpperCase() === 'CR2024') {
+        // Fallback para Carlos si no hay datos guardados
+        const carlosProgress = {
+          userName: "Carlos Ruiz",
+          age: 72,
+          memberSince: "15/01/2024",
           weeklyProgress: {
-            sessionsCompleted: completedSessions.length,
-            totalSessions: storedUser.weeklyProgress.totalSessions,
-            exerciseMinutes: storedUser.weeklyProgress.exerciseMinutes,
-            weeklyGoal: storedUser.weeklyProgress.weeklyGoal
+            sessionsCompleted: 5,
+            totalSessions: 6,
+            exerciseMinutes: 240,
+            weeklyGoal: 300
           },
-          progressHistory: storedUser.progressHistory,
+          progressHistory: [
+            { week: "Esta semana", sessions: 5, minutes: 240 },
+            { week: "Semana pasada", sessions: 4, minutes: 160 },
+            { week: "Hace 2 semanas", sessions: 3, minutes: 120 },
+            { week: "Hace 3 semanas", sessions: 4, minutes: 155 },
+          ],
           recentSessions: [
             { name: "Equilibrio y Coordinación", date: "Hoy", completed: true },
             { name: "Yoga Suave para Seniors", date: "Ayer", completed: true },
             { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
             { name: "Fortalecimiento Muscular", date: "Hace 3 días", completed: true },
             { name: "Pilates para Flexibilidad", date: "Hace 4 días", completed: true },
-          ].slice(0, completedSessions.length)
-        };
-        
-        setSharedProgress(realProgress);
-        toast({
-          title: "Progreso encontrado",
-          description: `Mostrando progreso real de ${realProgress.userName}`
-        });
-      } else {
-        // Simular datos de progreso compartido para otros códigos
-        const mockSharedProgress = {
-          userName: "María González",
-          age: 68,
-          memberSince: "15/03/2024",
-          weeklyProgress: {
-            sessionsCompleted: 4,
-            totalSessions: 5,
-            exerciseMinutes: 180,
-            weeklyGoal: 200
-          },
-          progressHistory: [
-            { week: "Esta semana", sessions: 4, minutes: 180 },
-            { week: "Semana pasada", sessions: 5, minutes: 200 },
-            { week: "Hace 2 semanas", sessions: 3, minutes: 150 },
-            { week: "Hace 3 semanas", sessions: 4, minutes: 170 },
-          ],
-          recentSessions: [
-            { name: "Yoga Suave", date: "Hoy", completed: true },
-            { name: "Equilibrio y Coordinación", date: "Ayer", completed: true },
-            { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
-            { name: "Caminata Activa", date: "Hace 3 días", completed: true },
           ]
         };
         
-        setSharedProgress(mockSharedProgress);
+        setSharedProgress(carlosProgress);
         toast({
           title: "Progreso encontrado",
-          description: `Mostrando progreso de ${mockSharedProgress.userName}`
+          description: `Mostrando progreso de ${carlosProgress.userName}`
         });
+      } else {
+        showMockProgress();
       }
     } else {
       toast({
@@ -206,6 +212,39 @@ export default function AuthPage({ onNavigate, onLogin }) {
         variant: "destructive"
       });
     }
+  };
+
+  const showMockProgress = () => {
+    // Simular datos de progreso compartido para otros códigos
+    const mockSharedProgress = {
+      userName: "María González",
+      age: 68,
+      memberSince: "15/03/2024",
+      weeklyProgress: {
+        sessionsCompleted: 4,
+        totalSessions: 5,
+        exerciseMinutes: 180,
+        weeklyGoal: 200
+      },
+      progressHistory: [
+        { week: "Esta semana", sessions: 4, minutes: 180 },
+        { week: "Semana pasada", sessions: 5, minutes: 200 },
+        { week: "Hace 2 semanas", sessions: 3, minutes: 150 },
+        { week: "Hace 3 semanas", sessions: 4, minutes: 170 },
+      ],
+      recentSessions: [
+        { name: "Yoga Suave", date: "Hoy", completed: true },
+        { name: "Equilibrio y Coordinación", date: "Ayer", completed: true },
+        { name: "Aqua Aeróbicos", date: "Hace 2 días", completed: true },
+        { name: "Caminata Activa", date: "Hace 3 días", completed: true },
+      ]
+    };
+    
+    setSharedProgress(mockSharedProgress);
+    toast({
+      title: "Progreso encontrado",
+      description: `Mostrando progreso de ${mockSharedProgress.userName}`
+    });
   };
 
   const ProgressViewer = () => (
@@ -480,14 +519,14 @@ export default function AuthPage({ onNavigate, onLogin }) {
                     </label>
                     <Input
                       type="text"
-                      placeholder="Ejemplo: CARLOS o CR2024"
+                      placeholder="Ejemplo: CARLOS"
                       value={progressCode}
                       onChange={(e) => setProgressCode(e.target.value)}
                       className="text-center font-mono text-lg"
                       maxLength={10}
                     />
                     <p className="text-xs text-gray-500 mt-2">
-                      Prueba con "CARLOS" para ver el progreso de Carlos Ruiz
+                      Ingresa el código que te compartió tu familiar
                     </p>
                   </div>
 

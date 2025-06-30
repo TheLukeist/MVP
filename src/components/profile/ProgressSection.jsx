@@ -5,17 +5,51 @@ import { Input } from '@/components/ui/input.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Progress } from '@/components/ui/progress.jsx';
 import { useToast } from '@/components/ui/use-toast.js';
+import { useLocalStorage } from '@/hooks/useLocalStorage.js';
 
 export default function ProgressSection({ userProfile }) {
   const [shareCode, setShareCode] = useState('');
+  const [completedSessions] = useLocalStorage('completedSessions', []);
   const { toast } = useToast();
 
+  // Calcular progreso real basado en sesiones completadas
+  const realSessionsCompleted = completedSessions.length;
+  const realTotalSessions = userProfile.weeklyProgress.totalSessions;
+
   const generateShareCode = () => {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Generar código basado en el usuario actual
+    let code;
+    if (userProfile.name === 'Carlos Ruiz') {
+      code = 'CARLOS';
+    } else {
+      // Para otros usuarios, generar código basado en sus iniciales y año
+      const initials = userProfile.name.split(' ').map(n => n[0]).join('');
+      const year = new Date().getFullYear().toString().slice(-2);
+      code = `${initials}${year}`;
+    }
+    
     setShareCode(code);
+    
+    // Guardar los datos del usuario actual para compartir
+    const shareData = {
+      userName: userProfile.name,
+      age: userProfile.age,
+      memberSince: userProfile.memberSince,
+      weeklyProgress: {
+        sessionsCompleted: realSessionsCompleted,
+        totalSessions: realTotalSessions,
+        exerciseMinutes: userProfile.weeklyProgress.exerciseMinutes,
+        weeklyGoal: userProfile.weeklyProgress.weeklyGoal
+      },
+      progressHistory: userProfile.progressHistory,
+      completedSessionsCount: realSessionsCompleted
+    };
+    
+    localStorage.setItem(`shareData_${code}`, JSON.stringify(shareData));
+    
     toast({
       title: "Código generado",
-      description: `Tu código de progreso es: ${code}`
+      description: `Tu código de progreso es: ${code}. Compártelo con tus familiares.`
     });
   };
 
@@ -28,8 +62,8 @@ export default function ProgressSection({ userProfile }) {
     });
   };
   
-  const sessionsPercentage = userProfile.weeklyProgress.totalSessions > 0 
-    ? (userProfile.weeklyProgress.sessionsCompleted / userProfile.weeklyProgress.totalSessions) * 100 
+  const sessionsPercentage = realTotalSessions > 0 
+    ? (realSessionsCompleted / realTotalSessions) * 100 
     : 0;
     
   const minutesPercentage = userProfile.weeklyProgress.weeklyGoal > 0 
@@ -47,7 +81,7 @@ export default function ProgressSection({ userProfile }) {
             <div>
               <div className="flex justify-between text-sm mb-2">
                 <span>Sesiones completadas</span>
-                <span>{userProfile.weeklyProgress.sessionsCompleted}/{userProfile.weeklyProgress.totalSessions}</span>
+                <span>{realSessionsCompleted}/{realTotalSessions}</span>
               </div>
               <Progress value={sessionsPercentage} />
             </div>
@@ -95,7 +129,7 @@ export default function ProgressSection({ userProfile }) {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600 mb-4">
-              Genera un código para que tus familiares puedan ver tu progreso.
+              Genera un código para que tus familiares puedan ver tu progreso actual.
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button onClick={generateShareCode} className="bg-blue-600 hover:bg-blue-700 flex-shrink-0">
@@ -110,6 +144,14 @@ export default function ProgressSection({ userProfile }) {
                 </div>
               )}
             </div>
+            {shareCode && (
+              <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-700">
+                  <strong>Código generado:</strong> {shareCode}<br />
+                  Comparte este código con tus familiares para que puedan ver tu progreso actual.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
